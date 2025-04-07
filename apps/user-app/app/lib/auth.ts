@@ -11,7 +11,10 @@ export const authOptions = {
             password: { label: "Password", type: "password", required: true }
           },
           // TODO: User credentials type from next-aut
-          async authorize(credentials: any) {
+          async authorize(credentials : any){
+            if (!credentials) {
+                throw new Error("No credentials provided");
+            }
             // Do zod validation, OTP validation here
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
@@ -26,11 +29,12 @@ export const authOptions = {
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
-                        email: existingUser.number
+               number:existingUser.number,
                     }
                 }
                 return null;
             }
+        
 
             try {
                 const user = await db.user.create({
@@ -47,6 +51,7 @@ export const authOptions = {
                 }
             } catch(e) {
                 console.error(e);
+                
             }
 
             return null
@@ -64,3 +69,4 @@ export const authOptions = {
     }
   }
   
+
