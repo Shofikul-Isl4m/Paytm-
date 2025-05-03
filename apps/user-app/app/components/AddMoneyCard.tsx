@@ -1,31 +1,30 @@
-"use client"
+"use client";
 import { useState } from "react";
 import { createOnRampTransaction } from "../lib/actions/createOnRamptxn";
 import { Card } from "@repo/ui/Card";
 import { TextInput } from "@repo/ui/TextInput";
-import { Select } from "@repo/ui/Select";                                                            "https://netbanking.hdfcbank.com"
-                                                                                                      "https://www.axisbank.com/"
+import { Select } from "@repo/ui/Select";
 import { Button } from "@repo/ui/Button";
 
-
-
 const SUPPORTED_BANKS = [
-    {
-        name :"HDFC BANK",
-        redirectUrl : "https://netbanking.hdfcbank.com"
-    },
-    {
-        name : "Axis Bank",
-        redirectUrl : "https://www.axisbank.com/"
-    }
-]
+  {
+    name: "HDFC BANK",
+    redirectUrl: "https://netbanking.hdfcbank.com",
+  },
+  {
+    name: "Axis Bank",
+    redirectUrl: "https://www.axisbank.com/",
+  },
+];
 
-   export const AddMoney = () => {
-    const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
-    const [amount , setAmount] = useState(0);
-    const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+export const AddMoney = () => {
+  const [redirectUrl, setRedirectUrl] = useState(
+    SUPPORTED_BANKS[0]?.redirectUrl
+  );
+  const [amount, setAmount] = useState(0);
+  const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
 
-   /* return  <Card title="Add Money">
+  /* return  <Card title="Add Money">
     <div className="w-full">
     <TextInput label={"Amount"} placeholder={"Amount"} onChange={(value) => {
             setAmount(Number(value))
@@ -51,32 +50,46 @@ const SUPPORTED_BANKS = [
             </Button>
         </div>
     < /div> 
-</Card> */ 
-      
+</Card> */
 
-return <Card title = "Add Money">
-    <div className="w-full">
+  return (
+    <Card title="Add Money">
+      <div className="w-full">
         <div>
-            <TextInput label = {"Amount"}  onChange={(value) => {setAmount(Number(value)) }} placeholder = {"Amount"} />
+          <TextInput
+            label={"Amount"}
+            onChange={(value) => {
+              setAmount(Number(value));
+            }}
+            placeholder={"Amount"}
+          />
         </div>
-        <div className="py-4 text-left">
-            Bank
-        </div>
-        <Select onSelect={(value) => {
-            setRedirectUrl(SUPPORTED_BANKS.find (x => x.name ===value)?.redirectUrl);
-            setProvider(SUPPORTED_BANKS.find(x => x.name === value)?.name || "");
-        }} options={
-            SUPPORTED_BANKS.map (x => ({
-                key : x.name,
-                value : x.name
-            }) )
-        }/>
+        <div className="py-4 text-left">Bank</div>
+        <Select
+          onSelect={(value) => {
+            setRedirectUrl(
+              SUPPORTED_BANKS.find((x) => x.name === value)?.redirectUrl
+            );
+            setProvider(
+              SUPPORTED_BANKS.find((x) => x.name === value)?.name || ""
+            );
+          }}
+          options={SUPPORTED_BANKS.map((x) => ({
+            key: x.name,
+            value: x.name,
+          }))}
+        />
         <div>
-         <Button    onClick ={async ()=> {
-            window.location.href = redirectUrl || "";
-          await  createOnRampTransaction(amount,provider)
-         }} >ADD Money </Button>
-         </div>
-    </div>
-</Card>
-} 
+          <Button
+            onClick={async () => {
+              window.location.href = redirectUrl || "";
+              await createOnRampTransaction(amount, provider);
+            }}
+          >
+            ADD Money{" "}
+          </Button>
+        </div>
+      </div>
+    </Card>
+  );
+};
